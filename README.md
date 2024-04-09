@@ -196,7 +196,7 @@ jobs:
     uses: "tweedegolf/actions-container-helpers/.github/workflows/container-tag-cleanup.yml@main"
     with:
       package: debian
-      filter: "^nightly-\d{2}-\d{2}-\d{4}$"
+      filter: "^nightly-\\d{2}-\\d{2}-\\d{4}$"
       keep_n: 5
   untagged-cleanup:
     needs: [old-nightly-cleanup]
