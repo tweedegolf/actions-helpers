@@ -37,6 +37,7 @@ This workflow has several parameters that allow customizing the behavior:
     <tr>
       <td><code>tags</code></td>
       <td>yes</td>
+      <td></td>
     </tr>
     <tr><td colspan="3">
       List of image tags (newline separated) for the resulting container image
@@ -225,6 +226,7 @@ This workflow has several parameters that allow customizing the behavior:
     <tr>
       <td><code>package</code></td>
       <td>yes</td>
+      <td></td>
     </tr>
     <tr><td colspan="3">
       Name of the container registry package
@@ -277,6 +279,7 @@ This workflow has several parameters that allow customizing the behavior:
     <tr>
       <td><code>package</code></td>
       <td>yes</td>
+      <td></td>
     </tr>
     <tr><td colspan="3">
       Name of the container registry package
