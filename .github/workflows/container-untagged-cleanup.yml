@@ -59,7 +59,7 @@ jobs:
             console.log(`Found ${untaggedItems.length} untagged images no longer necessary`);
             for (const untagged of untaggedItems) {
                 await github.rest.packages.deletePackageVersionForOrg({
-                    packate_type: 'container',
+                    package_type: 'container',
                     package_name: package,
                     org: context.repo.owner,
                     package_version_id: untagged.id,
