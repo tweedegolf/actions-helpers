@@ -59,7 +59,7 @@ jobs:
             console.log(`Found ${toRemove.length} tagged images to remove`);
             for (const r of toRemove) {
                 await github.rest.packages.deletePackageVersionForOrg({
-                    packate_type: 'container',
+                    package_type: 'container',
                     package_name: package,
                     org: context.repo.owner,
                     package_version_id: r.id,
