@@ -82,6 +82,14 @@ This workflow has several parameters that allow customizing the behavior:
     <tr><td colspan="3">
       Name of the dockerfile to build
     </td></tr>
+    <tr>
+      <td><code>artifact</code></td>
+      <td>no</td>
+      <td><code></code></td>
+    </tr>
+    <tr><td colspan="3">
+      Download artifact with this name
+    </td></tr>
   </tbody>
 </table>
 
