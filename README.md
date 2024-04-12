@@ -148,7 +148,7 @@ matrix to allow multiple images to be generated:
       branches:
         - main
     schedule:
-      - cron: '15 2 * * SUN'
+      - cron: '30 2 * * SUN'
 
   jobs:
     build-and-push:
@@ -196,8 +196,9 @@ permissions:
   packages: write
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '15 2 * * MON'
+    - cron: '30 2 * * MON'
 
 jobs:
   old-nightly-cleanup:
