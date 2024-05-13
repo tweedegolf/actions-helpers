@@ -17,7 +17,7 @@ jobs:
   # ...
 
   docker:
-    uses: "tweedegolf/actions-container-helpers/.github/workflows/container-image.yml@main"
+    uses: "tweedegolf/actions-helpers/.github/workflows/container-image.yml@main"
     with:
         push: ${{ github.ref == 'refs/heads/main' }}
         platforms: "linux/amd64,linux/arm64"
@@ -120,7 +120,7 @@ matrix to allow multiple images to be generated:
             - version: bullseye
               latest: false
               alt: oldstable
-      uses: "tweedegolf/actions-container-helpers/.github/workflows/container-image.yml@main"
+      uses: "tweedegolf/actions-helpers/.github/workflows/container-image.yml@main"
       with:
           push: ${{ github.ref == 'refs/heads/main' }}
           platforms: "linux/amd64,linux/arm64"
@@ -202,14 +202,14 @@ on:
 
 jobs:
   old-nightly-cleanup:
-    uses: "tweedegolf/actions-container-helpers/.github/workflows/container-tag-cleanup.yml@main"
+    uses: "tweedegolf/actions-helpers/.github/workflows/container-tag-cleanup.yml@main"
     with:
       package: debian
       filter: "^nightly-\\d{2}-\\d{2}-\\d{4}$"
       keep_n: 5
   untagged-cleanup:
     needs: [old-nightly-cleanup]
-    uses: "tweedegolf/actions-container-helpers/.github/workflows/container-untagged-cleanup.yml@main"
+    uses: "tweedegolf/actions-helpers/.github/workflows/container-untagged-cleanup.yml@main"
     with:
         package: debian
 ```
