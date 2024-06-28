@@ -7,6 +7,11 @@ on:
         description: 'Deploy environment'
         required: true
         type: string
+    secrets:
+      TGOPS_TOKEN:
+        required: true
+      DEPLOY_TOKEN:
+        required: true
 
 jobs:
   deploy:
@@ -28,5 +33,5 @@ jobs:
       - name: Run tgops deploy
         run: chmod +x ./tgops && ./tgops deploy
         env:
-          ENV: ${{ inputs.env  }}
+          ENV: ${{inputs.env}}
           DEPLOY_TOKEN: ${{secrets.DEPLOY_TOKEN}}
