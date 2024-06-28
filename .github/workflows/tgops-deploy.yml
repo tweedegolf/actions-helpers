@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        description: 'Deploy environment'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download tgops executable
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          github_token: ${{secrets.TGOPS_TOKEN}}
+          name: tgops
+          repo: tweedegolf/tgops
+          workflow: build.yml
+          search_artifacts: true
+
+      - name: Run tgops deploy
+        run: chmod +x ./tgops && ./tgops deploy
+        env:
+          ENV: ${{ inputs.env  }}
+          DEPLOY_TOKEN: ${{secrets.DEPLOY_TOKEN}}
