@@ -51,7 +51,7 @@ jobs:
                 per_page: 100,
             });
             const matched = containerImages.filter(p => (p.metadata?.container?.tags ?? []).every(t => t.match(filter) !== null));
-            const filteredMatched = matched.filter(p => p.metadata.containers.tags.every(t => t.match(filter) === null));
+            const filteredMatched = matched.filter(p => p.metadata.container.tags.every(t => t.match(filter) === null));
             const sorted = filteredMatched.sort((a, b) => (new Date(a.created_at)).getTime() - (new Date(b.created_at).getTime()));
             const oldSorted = olderThan > 0 ? sorted.filter(p => (new Date(p.created_at)) < olderThanTime) : sorted;
             const toRemove = keepN >= 0 ? oldSorted.slice(keepN) : oldSorted;
@@ -64,5 +64,5 @@ jobs:
                     org: context.repo.owner,
                     package_version_id: r.id,
                 });
-                console.log(`Deleted container image '${r.name}' (with tags: ${r.metadata.containers.tags.join(', ')})`);
+                console.log(`Deleted container image '${r.name}' (with tags: ${r.metadata.container.tags.join(', ')})`);
             }
