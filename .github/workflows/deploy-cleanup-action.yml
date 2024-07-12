@@ -24,7 +24,7 @@ jobs:
       images: ${{ steps.images.outputs.image_array }}
     steps:
     - id: images
-      run: echo "image_array=[$(echo "$image_list" | tr '\n' ',')]" >> "$GITHUB_OUTPUT"
+      run: echo "image_array=$(printf "$image_list" | jq  --raw-input .  | jq --slurp -c .)" >> "$GITHUB_OUTPUT"
       shell: bash
       env:
         image_list: ${{ inputs.images }}
