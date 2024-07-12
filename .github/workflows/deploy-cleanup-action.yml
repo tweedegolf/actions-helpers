@@ -19,6 +19,7 @@ on:
 
 jobs:
   init:
+    name: Initialize ${{ inputs.env }}
     runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.images.outputs.image_array }}
@@ -30,6 +31,7 @@ jobs:
         image_list: ${{ inputs.images }}
 
   tag:
+    name: Tag ${{ matrix.images }} image for ${{ inputs.env }}
     needs: init
     runs-on: ubuntu-latest
     permissions:
@@ -49,6 +51,7 @@ jobs:
           tags: ${{ inputs.env }}-${{ env.tag }}
 
   deploy:
+    name: TGOPS deploy ${{ inputs.env }}
     needs: tag
     runs-on: ubuntu-latest
     steps:
@@ -60,6 +63,7 @@ jobs:
           deploy-token: ${{ secrets.DEPLOY_TOKEN }}
 
   cleanup:
+    name: Cleanup old ${{ matrix.images }} images
     needs: [tag, init]
     runs-on: ubuntu-latest
     permissions:
