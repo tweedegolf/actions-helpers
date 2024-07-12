@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: tweedegolf/tgops-deploy-action@main
         with:
-          env: production
+          env: ${{ inputs.env }}
           tgops-token: ${{ secrets.TGOPS_TOKEN }}
           deploy-token: ${{ secrets.DEPLOY_TOKEN }}
 
