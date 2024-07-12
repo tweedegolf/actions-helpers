@@ -1,0 +1,82 @@
+name: Deploy and cleanup
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        description: Deploy environment
+        required: true
+        type: string
+      images:
+        description: Newline separated list of docker images to tag and cleanup
+        required: true
+        type: string
+    secrets:
+      TGOPS_TOKEN:
+        required: true
+      DEPLOY_TOKEN:
+        required: true
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.images.outputs.image_array }}
+    steps:
+    - id: images
+      run: echo "image_array=[$(echo "$image_list" | tr '\n' ',')]" >> "$GITHUB_OUTPUT"
+      shell: bash
+      env:
+        image_list: ${{ inputs.images }}
+
+  tag:
+    needs: init
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        images: ${{fromJson(needs.init.outputs.images)}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tweedegolf/create-tag-action@main
+      - uses: tweedegolf/retag-action@main
+        with:
+          image: ${{ github.repository_owner }}/${{ matrix.images }}
+          tag: ${{ env.tag }}
+          new-tag: ${{ inputs.env }}-${{ env.tag }}
+  
+  deploy:
+    needs: tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tweedegolf/tgops-deploy-action@main
+        with:
+          env: production
+          tgops-token: ${{ secrets.TGOPS_TOKEN }}
+          deploy-token: ${{ secrets.DEPLOY_TOKEN }}
+
+  cleanup:
+    needs: [tag, init]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        images: ${{fromJson(needs.init.outputs.images)}}
+    steps:
+      - uses: "tweedegolf/cleanup-images-action@main"
+        with:
+          package: ${{ matrix.images }}
+          filters: |-
+            ^\d+-\w+$
+            ^production-\d+-\w+$
+            ^preview-\d+-\w+$
+            ^staging-\d+-\w+$
+          keep_n: 2
+      - uses: "tweedegolf/cleanup-untagged-images-action@main"
+        with:
+          package: ${{ matrix.images }}
