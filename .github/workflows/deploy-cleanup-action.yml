@@ -1,5 +1,5 @@
 name: Deploy
-run-name: "Deploy ${{ github.ref_name }} -> production"
+run-name: "Deploy ${{ github.ref_name }} to production by ${{ github.actor }}"
 
 on:
   workflow_call:
