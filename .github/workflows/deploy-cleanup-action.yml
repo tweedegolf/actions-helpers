@@ -23,12 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.images.outputs.image_array }}
-      tag: ${{ steps.tag.outputs.tag }}
     steps:
-      - uses: tweedegolf/create-tag-action@main
-      - id: tag
-        run: echo "tag=${{ env.tag }}" >> "$GITHUB_OUTPUT"
-        shell: bash
       - id: images
         run: echo "image_array=$(printf "$image_list" | jq  --raw-input .  | jq --slurp -c .)" >> "$GITHUB_OUTPUT"
         shell: bash
@@ -36,7 +31,7 @@ jobs:
           image_list: ${{ inputs.images }}
 
   tag:
-    name: "${{ matrix.images }} ${{ needs.init.outputs.tag }}"
+    name: "tag ${{ matrix.images }}"
     needs: init
     runs-on: ubuntu-latest
     permissions:
@@ -67,7 +62,7 @@ jobs:
           deploy-token: ${{ secrets.DEPLOY_TOKEN }}
 
   cleanup:
-    name: ${{ matrix.images }}
+    name: "cleanup ${{ matrix.images }}"
     needs: [tag, init]
     runs-on: ubuntu-latest
     permissions:
