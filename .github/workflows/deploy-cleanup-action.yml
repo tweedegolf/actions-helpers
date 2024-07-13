@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: tweedegolf/create-tag-action@main
       - id: tag
-        run: echo "tag=$tag" >> "$GITHUB_OUTPUT"
+        run: echo "tag=$(printf "$tag")" >> "$GITHUB_OUTPUT"
         shell: bash
         env:
           tag: ${{ env.tag }}
