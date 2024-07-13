@@ -20,7 +20,6 @@ on:
 
 jobs:
   init:
-    name: init ${{ inputs.env }}
     runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.images.outputs.image_array }}
@@ -39,7 +38,7 @@ jobs:
           image_list: ${{ inputs.images }}
 
   tag:
-    name: ${{ matrix.images }}\:${{ inputs.env }}-${{ needs.init.outputs.tag }}
+    name: "${{ matrix.images }} ${{ needs.init.outputs.tag }}"
     needs: init
     runs-on: ubuntu-latest
     permissions:
@@ -58,7 +57,6 @@ jobs:
           tags: ${{ inputs.env }}-${{ needs.init.outputs.tag }}
 
   deploy:
-    name: apply ${{ inputs.env }}
     needs: tag
     runs-on: ubuntu-latest
     steps:
@@ -70,7 +68,7 @@ jobs:
           deploy-token: ${{ secrets.DEPLOY_TOKEN }}
 
   cleanup:
-    name: cleanup ${{ matrix.images }}
+    name: ${{ matrix.images }}
     needs: [tag, init]
     runs-on: ubuntu-latest
     permissions:
