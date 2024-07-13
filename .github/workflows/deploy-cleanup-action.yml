@@ -38,7 +38,7 @@ jobs:
           image_list: ${{ inputs.images }}
 
   tag:
-    name: "${{ matrix.images }} ${{ needs.init.outputs.tag }}"
+    name: ${{ matrix.images }}
     needs: init
     runs-on: ubuntu-latest
     permissions:
