@@ -27,10 +27,8 @@ jobs:
     steps:
       - uses: tweedegolf/create-tag-action@main
       - id: tag
-        run: echo "tag=$(printf "$tag")" >> "$GITHUB_OUTPUT"
+        run: echo "tag=${{ env.tag }}" >> "$GITHUB_OUTPUT"
         shell: bash
-        env:
-          tag: ${{ env.tag }}
       - id: images
         run: echo "image_array=$(printf "$image_list" | jq  --raw-input .  | jq --slurp -c .)" >> "$GITHUB_OUTPUT"
         shell: bash
@@ -38,7 +36,7 @@ jobs:
           image_list: ${{ inputs.images }}
 
   tag:
-    name: ${{ matrix.images }}
+    name: "${{ matrix.images }} ${{ needs.init.outputs.tag }}"
     needs: init
     runs-on: ubuntu-latest
     permissions:
@@ -49,12 +47,13 @@ jobs:
         images: ${{fromJson(needs.init.outputs.images)}}
     steps:
       - uses: actions/checkout@v4
+      - uses: tweedegolf/create-tag-action@main
       - uses: shrink/actions-docker-registry-tag@v4
         with:
           registry: ghcr.io
           repository: ${{ github.repository_owner }}/${{ matrix.images }}
-          target: ${{ needs.init.outputs.tag }}
-          tags: ${{ inputs.env }}-${{ needs.init.outputs.tag }}
+          target: ${{ env.tag }}
+          tags: ${{ inputs.env }}-${{ env.tag }}
 
   deploy:
     needs: tag
