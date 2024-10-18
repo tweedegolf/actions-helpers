@@ -80,7 +80,7 @@ jobs:
             ^production-\d+-\w+$
             ^preview-\d+-\w+$
             ^staging-\d+-\w+$
-          keep_n: 2
+          keep_n: 3
       - uses: "tweedegolf/cleanup-untagged-images-action@main"
         with:
           package: ${{ matrix.images }}
