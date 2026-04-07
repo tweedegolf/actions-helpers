@@ -41,9 +41,9 @@ jobs:
       matrix:
         images: ${{fromJson(needs.init.outputs.images)}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: tweedegolf/create-tag-action@main
-      - uses: shrink/actions-docker-registry-tag@v4
+      - uses: shrink/actions-docker-registry-tag@e6aaef25c595b6e0edd18bf4c7dbfea3abd43299 # v5.0.0
         with:
           registry: ghcr.io
           repository: ${{ github.repository_owner }}/${{ matrix.images }}
@@ -54,7 +54,7 @@ jobs:
     needs: tag
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: tweedegolf/tgops-deploy-action@main
         with:
           env: ${{ inputs.env }}
